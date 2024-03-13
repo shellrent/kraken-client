@@ -3,6 +3,7 @@
 namespace Shellrent\KrakenClient;
 
 use Carbon\Carbon;
+use Throwable;
 
 class ReportBuilder {
 
@@ -58,11 +59,6 @@ class ReportBuilder {
 		return $this;
 	}
 	
-	/**
-	 * @param array $extraInfo
-	 *
-	 * @return ReportBuilder
-	 */
 	public function addExtraInfo( string $key, $extraInfo ): ReportBuilder {
 		$this->extraInfo[$key] = $extraInfo;
 		return $this;
@@ -78,7 +74,7 @@ class ReportBuilder {
 		];
 	}
 	
-	public static function createFromException( \Throwable $exception, $type = 'EXCEPTION' ): self {
+	public static function createFromException( Throwable $exception, $type = 'EXCEPTION' ): self {
 		$builder = new static( $type, $exception->getMessage() );
 		
 		$builder->addExtraInfo( 'exception', get_class( $exception ) );

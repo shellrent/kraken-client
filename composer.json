@@ -1,9 +1,11 @@
 {
     "name": "shellrent/kraken-client",
     "description": "Api client for Kraken project",
+    "version": "1.0.0",
     "type": "library",
+
     "require": {
-        "php": "^8.2",
+        "php": ">=8.0",
         "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
@@ -19,9 +21,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                " Shellrent\\KrakenClient\\Laravel\\KrakenClientProvider"
-            ]
+                "Shellrent\\KrakenClient\\Laravel\\KrakenServiceProvider"
+            ],
+            "aliases": {
+                "KrakenClient": "Shellrent\\KrakenClient\\Laravel\\Facades\\KarkenClient"
+            }
         }
     }
-    
 }

@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
 
-class ApiClient {
+class KrakenClient {
 	private Client $client;
 	private string $endpoint;
 	private string $authToken;
