@@ -23,7 +23,7 @@ class KrakenExceptionHandler extends ExceptionHandler{
 
 			} catch( Throwable $fatalException ) {
 				$fatalErrorHandler = config('kraken.fatal_error_handler' );
-				(new $fatalErrorHandler)( $e, $fatalException );
+				(new $fatalErrorHandler)( $fatalException, $e );
 			}
 		});
 	}

@@ -4,6 +4,7 @@ namespace Shellrent\KrakenClient;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
 class KrakenClient {
@@ -36,18 +37,17 @@ class KrakenClient {
 		return $this->client->send( $request );
 	}
 	
-	public function sendReport( array $reportInfo, bool $async = true ): void {
+	public function sendReport( array $reportInfo ): ResponseInterface {
 		$request = new Request(
 			'POST',
 			'/api/report',
 			$this->getHeaders(),
 			json_encode( $reportInfo )
 		);
-		if( $async ) {
-			$this->client->sendAsync( $request );
-			
-		} else {
-			$this->client->send( $request );
-		}
+		
+		return $this->client->send( $request, [
+			RequestOptions::CONNECT_TIMEOUT => 100,
+			RequestOptions::TIMEOUT => 10
+		] );
 	}
 }

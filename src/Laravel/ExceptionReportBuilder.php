@@ -15,8 +15,20 @@ class ExceptionReportBuilder {
 		$report->addExtraInfo( 'session', Session::all() );
 		$report->addExtraInfo( 'cookie', Cookie::get() );
 		$report->addExtraInfo( 'server', Request::server());
-		
+		$report->addExtraInfo( 'domain', Request::getHttpHost() );
 		$report->addExtraInfo( 'requestUri', Request::getRequestUri() );
+		
+		$report->addExtraInfo( 'header', Request::header() );
+		
+		$query = Request::query();
+		if( !empty( $query ) ) {
+			$report->addExtraInfo( 'get', $query );
+		}
+		
+		$post = Request::post();
+		if( !empty( $post ) ) {
+			$report->addExtraInfo( 'post', $post );
+		}
 		
 		return $report;
 	}
