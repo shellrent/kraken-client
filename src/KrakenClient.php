@@ -26,14 +26,28 @@ class KrakenClient {
 		];
 	}
 	
-	public function sendReport( array $reportInfo ): ResponseInterface {
+	public function testConnection(): ResponseInterface {
+		$request = new Request(
+			'GET',
+			'/api/test_connection',
+			$this->getHeaders()
+		);
+		
+		return $this->client->send( $request );
+	}
+	
+	public function sendReport( array $reportInfo, bool $async = true ): void {
 		$request = new Request(
 			'POST',
 			'/api/report',
 			$this->getHeaders(),
 			json_encode( $reportInfo )
 		);
-		
-		return $this->client->send( $request );
+		if( $async ) {
+			$this->client->sendAsync( $request );
+			
+		} else {
+			$this->client->send( $request );
+		}
 	}
 }

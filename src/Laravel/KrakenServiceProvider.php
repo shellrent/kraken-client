@@ -4,6 +4,7 @@ namespace Shellrent\KrakenClient\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use Shellrent\KrakenClient\KrakenClient;
+use Shellrent\KrakenClient\Laravel\Console\TestConnection;
 
 class KrakenServiceProvider extends ServiceProvider {
 	public function register() {
@@ -19,6 +20,10 @@ class KrakenServiceProvider extends ServiceProvider {
 			$this->publishes([
 				__DIR__.'/config/config.php' => config_path('kraken.php'),
 			], 'config');
+			
+			$this->commands([
+				TestConnection::class
+			]);
 		}
 	}
 }
