@@ -1,14 +1,15 @@
 <?php
 
-namespace Shellrent\KrakenClient\Laravel;
+namespace Shellrent\KrakenClient\Laravel\ReportBuilder;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Shellrent\KrakenClient\ReportBuilder;
 use Throwable;
 
-class ExceptionReportBuilder {
+class ExceptionBuilder extends GenericBuilder {
 	protected function buildReport( Throwable $e ): ReportBuilder {
 		$report = ReportBuilder::createFromException( $e, config('kraken.exception_report_type') );
 		
@@ -19,6 +20,11 @@ class ExceptionReportBuilder {
 		$report->addExtraInfo( 'requestUri', Request::getRequestUri() );
 		
 		$report->addExtraInfo( 'header', Request::header() );
+		
+		$module = $this->getModule();
+		if( $module ) {
+			$report->setModule( $module );
+		}
 		
 		$query = Request::query();
 		if( !empty( $query ) ) {
