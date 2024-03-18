@@ -7,6 +7,6 @@ use Throwable;
 
 class FatalErrorHandler {
 	public function __invoke( Throwable $fatalError, Throwable $originalException ): void {
-		Log::error( $fatalError->getMessage() );
+		Log::channel('errorlog' )->critical( $fatalError->getMessage() );
 	}
 }

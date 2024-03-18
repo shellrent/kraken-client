@@ -5,9 +5,6 @@ namespace Shellrent\KrakenClient\Laravel\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Level;
 use Monolog\LogRecord;
-use Shellrent\KrakenClient\Laravel\Facades\KrakenClient;
-use Shellrent\KrakenClient\Laravel\Logger;
-use Shellrent\KrakenClient\ReportBuilder;
 
 class KrakenLogHandler extends AbstractProcessingHandler {
 	/**
@@ -32,8 +29,6 @@ class KrakenLogHandler extends AbstractProcessingHandler {
 	}
 	
 	protected function write( LogRecord $record ): void {
-		try {
-			Logger::write( $record->message );
-		} catch( \Throwable  $e ){}
+		\Shellrent\KrakenClient\Laravel\Facades\KrakenLogger::log( $record->level->toPsrLogLevel(), $record->message );
 	}
 }

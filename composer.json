@@ -24,7 +24,8 @@
                 "Shellrent\\KrakenClient\\Laravel\\KrakenServiceProvider"
             ],
             "aliases": {
-                "KrakenClient": "Shellrent\\KrakenClient\\Laravel\\Facades\\KarkenClient"
+                "KrakenClient": "Shellrent\\KrakenClient\\Laravel\\Facades\\KarkenClient",
+                "KrakenLogger": "Shellrent\\KrakenClient\\Laravel\\Facades\\KrakenLogger"
             }
         }
     }
