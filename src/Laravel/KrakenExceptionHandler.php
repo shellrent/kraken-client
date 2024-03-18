@@ -1,6 +1,6 @@
 <?php
 
-namespace Shellrent\KrakenClient\Laravel\ExceptionHandler;
+namespace Shellrent\KrakenClient\Laravel;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;

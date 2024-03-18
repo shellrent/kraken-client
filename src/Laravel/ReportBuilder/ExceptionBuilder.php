@@ -16,11 +16,7 @@ class ExceptionBuilder extends GenericBuilder {
 			$this->addHttpRequestData( $report );
 		}
 		
-		$module = $this->getModule();
-		if( $module ) {
-			$report->setModule( $module );
-		}
-		
+		$report->setModule( $this->getModule() );
 		
 		return $report;
 	}

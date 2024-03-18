@@ -8,11 +8,7 @@ class LogBuilder extends GenericBuilder {
 	protected function buildReport( string $message, string $level ): ReportBuilder {
 		$report = new ReportBuilder( config('kraken.log_report_type' ), $message );
 		
-		$module = $this->getModule();
-		if( $module ) {
-			$report->setModule( $module );
-		}
-		
+		$report->setModule( $this->getModule() );
 		$report->addExtraInfo( 'level', $level );
 		
 		return $report;
