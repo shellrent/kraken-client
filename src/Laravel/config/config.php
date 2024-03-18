@@ -3,7 +3,11 @@
 return [
 	'endpoint' => env( 'KRAKEN_ENDPOINT', 'localhost' ),
 	'auth_token' => env( 'KRAKEN_AUTH_TOKEN', 'token' ),
-	'queue_name' => null,
+	
+	/**
+	 * null|default
+	 */
+	'queue_name' =>env( 'KRAKEN_QUEUE_NAME', null ),
 	'app_module_code' => 'WEB',
 	'cli_module_code' => 'CLI',
 	'enabled_envs' => ['production'],
