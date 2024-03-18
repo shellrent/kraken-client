@@ -4,7 +4,7 @@ namespace Shellrent\KrakenClient\Laravel\ExceptionHandler;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\App;
-use Shellrent\KrakenClient\Laravel\Facades\KrakenClient;
+use Shellrent\KrakenClient\Laravel\Facades\KrakenLogger;
 use Throwable;
 
 class KrakenExceptionHandler extends ExceptionHandler{
@@ -15,11 +15,9 @@ class KrakenExceptionHandler extends ExceptionHandler{
 				if( $enabledEnvs !== null and !in_array( App::environment(), $enabledEnvs ) ) {
 					return;
 				}
-	
-				$builder = config('kraken.exception_report_builder' );
-				$report = (new $builder)( $e );
 
-				KrakenClient::sendReport( $report->getData() );
+				KrakenLogger::exception( $e );
+				
 			} catch( Throwable $fatalException ) {
 				$fatalErrorHandler = config('kraken.fatal_error_handler' );
 				(new $fatalErrorHandler)( $fatalException, $e );

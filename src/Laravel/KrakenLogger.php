@@ -1,6 +1,6 @@
 <?php
 
-namespace Shellrent\KrakenClient\Laravel\Logger;
+namespace Shellrent\KrakenClient\Laravel;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -15,6 +15,13 @@ class KrakenLogger implements LoggerInterface {
 	private function write( string $message, string $level ): void {
 		$builder = config('kraken.log_report_builder' );
 		$report = (new $builder)( $message, $level );
+		
+		$this->client->sendReport( $report->getData() );
+	}
+	
+	public function exception( \Throwable $exception ): void {
+		$builder = config('kraken.exception_report_builder' );
+		$report = (new $builder)( $exception );
 		
 		$this->client->sendReport( $report->getData() );
 	}

@@ -18,7 +18,6 @@ class LogBuilder extends GenericBuilder {
 		return $report;
 	}
 	
-	
 	public final function __invoke( string $message, string $level ): ReportBuilder {
 		return $this->buildReport( $message, $level );
 	}

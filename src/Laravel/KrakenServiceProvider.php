@@ -2,10 +2,11 @@
 
 namespace Shellrent\KrakenClient\Laravel;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Shellrent\KrakenClient\KrakenClient;
 use Shellrent\KrakenClient\Laravel\Console\TestConnection;
-use Shellrent\KrakenClient\Laravel\Logger\KrakenLogger;
+use Shellrent\KrakenClient\Laravel\Logger\KrakenLogChannel;
 
 class KrakenServiceProvider extends ServiceProvider {
 	public function register() {
@@ -16,6 +17,10 @@ class KrakenServiceProvider extends ServiceProvider {
 		});
 		
 		$this->app->singleton( KrakenLogger::class, KrakenLogger::class );
+		
+		Log::extend('kraken', function ($app, array $config) {
+			return (new KrakenLogChannel($app))($config);
+		});
 	}
 	
 	public function boot() {
