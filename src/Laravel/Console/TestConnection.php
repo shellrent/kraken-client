@@ -14,16 +14,18 @@ class TestConnection extends Command {
 		$result = json_decode( KrakenClient::testConnection()->getBody() );
 		$reportTypes = $result->data->types;
 		
+		$exceptionType = config( 'kraken.exception_report_type' );
+		$logType = config('kraken.log_report_type' );
+		$queue = config('kraken.queue_name' );
+		
 		$this->info( $result->data->message );
 		
-		$exceptionType = config( 'kraken.exception_report_type' );
 		if( in_array( $exceptionType, $reportTypes ) ) {
 			$this->info( sprintf( 'Exception type "%s" successfully configured', $exceptionType ) );
 		} else {
 			$this->error( sprintf( 'Exception type "%s" not configured', $exceptionType ) );
 		}
 		
-		$logType = config('kraken.log_report_type' );
 		if( in_array( $logType, $reportTypes ) ) {
 			$this->info( sprintf( 'Log type "%s" successfully configured', $logType ) );
 		} else {
@@ -31,5 +33,11 @@ class TestConnection extends Command {
 		}
 		
 		$this->line( 'Available report types: ' . implode( ' - ', $reportTypes ) );
+		
+		if( $queue !== null ) {
+			$this->line( 'Reports sent asynchronously via the job queue ' . $queue );
+		} else {
+			$this->warn( 'Report submission queue is disable, they will be sent synchronously' );
+		}
 	}
 }

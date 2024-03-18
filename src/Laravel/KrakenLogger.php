@@ -18,7 +18,7 @@ class KrakenLogger implements LoggerInterface {
 		$this->queue = config( 'kraken.queue_name' );
 	}
 	
-	private function dispatch( ReportBuilder $report ) {
+	private function dispatch( ReportBuilder $report ): void {
 		if( $this->queue !== null ) {
 			SendReport::dispatch( $report->getData() )
 				->onQueue( $this->queue );
