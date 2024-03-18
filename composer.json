@@ -6,7 +6,8 @@
 
     "require": {
         "php": ">=8.0",
-        "guzzlehttp/guzzle": "^7.0"
+        "guzzlehttp/guzzle": "^7.0",
+        "nesbot/carbon": "^2.72"
     },
     "require-dev": {
         "orchestra/testbench": "^8.0",
