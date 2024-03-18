@@ -16,7 +16,7 @@ class KrakenServiceProvider extends ServiceProvider {
 			return new KrakenClient( config('kraken.endpoint'), config('kraken.auth_token' ) );
 		});
 		
-		$this->app->singleton( KrakenLogger::class, KrakenLogger::class );
+		$this->app->bind( KrakenLogger::class, KrakenLogger::class );
 		
 		Log::extend('kraken', function ($app, array $config) {
 			return (new KrakenLogChannel($app))($config);

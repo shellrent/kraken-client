@@ -4,26 +4,51 @@ namespace Shellrent\KrakenClient\Laravel;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Shellrent\KrakenClient\KrakenClient;
+use Shellrent\KrakenClient\Laravel\Jobs\SendReport;
+use Shellrent\KrakenClient\ReportBuilder;
 use Stringable;
 
 class KrakenLogger implements LoggerInterface {
-	public function __construct(
-		private KrakenClient $client
-	) {}
+	private ?string $queue;
 	
-	private function write( string $message, string $level ): void {
+	/**
+	 * @param string|null $queueName
+	 */
+	public function __construct() {
+		$this->queue = config( 'kraken.queue_name' );
+	}
+	
+	private function dispatch( ReportBuilder $report ) {
+		if( $this->queue !== null ) {
+			SendReport::dispatch( $report->getData() )
+				->onQueue( $this->queue );
+			
+		} else {
+			SendReport::dispatchSync( $report->getData() );
+		}
+	}
+	
+	protected function write( string $message, string $level ): void {
 		$builder = config('kraken.log_report_builder' );
 		$report = (new $builder)( $message, $level );
 		
-		$this->client->sendReport( $report->getData() );
+		$this->dispatch( $report );
+	}
+	
+	public function onQueue( ?string $queue ): self {
+		$this->queue = $queue;
+		return $this;
 	}
 	
 	public function exception( \Throwable $exception ): void {
 		$builder = config('kraken.exception_report_builder' );
 		$report = (new $builder)( $exception );
 		
-		$this->client->sendReport( $report->getData() );
+		$this->dispatch( $report );
+	}
+	
+	public function log( $level, Stringable|string $message, array $context = [] ): void {
+		$this->write( $message, $level );
 	}
 	
 	public function emergency( Stringable|string $message, array $context = [] ): void {
@@ -56,9 +81,5 @@ class KrakenLogger implements LoggerInterface {
 	
 	public function debug( Stringable|string $message, array $context = [] ): void {
 		$this->write( $message, LogLevel::DEBUG );
-	}
-	
-	public function log( $level, Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, $level );
 	}
 }
