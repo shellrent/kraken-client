@@ -5,49 +5,36 @@ namespace Shellrent\KrakenClient\Phalcon;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Shellrent\KrakenClient\KrakenClient;
-use Shellrent\KrakenClient\Phalcon\ReportBuilder\ExceptionBuilder;
-use Shellrent\KrakenClient\Phalcon\ReportBuilder\FatalErrorBuilder;
-use Shellrent\KrakenClient\Phalcon\ReportBuilder\LogBuilder;
+use Shellrent\KrakenClient\Phalcon\Config\Config;
 use Shellrent\KrakenClient\ReportBuilder;
+use Throwable;
 
 class KrakenLogger implements LoggerInterface {
 	private KrakenClient $client;
-	private ExceptionBuilder $exceptionBuilder;
-	private FatalErrorBuilder $fatalErrorBuilder;
-	private LogBuilder $logBuilder;
+	private Config $config;
 	
-	public function __construct( ?KrakenClient $client = null, ?ExceptionBuilder $exceptionBuilder = null, ?FatalErrorBuilder $fatalErrorBuilder = null, ?LogBuilder $logBuilder = null  ) {
-		if( !$client ) {
-			$client = new KrakenClient(
-				env( 'KRAKEN_API_ENDPOINT', 'localhost' ),
-				env( 'KRAKEN_API_TOKEN', 'token' )
-			);
-		}
-
-		$this->client = $client;
-		$this->exceptionBuilder = $exceptionBuilder ?? new ExceptionBuilder();
-		$this->fatalErrorBuilder = $fatalErrorBuilder ?? new FatalErrorBuilder();
-		$this->logBuilder = $logBuilder ?? new LogBuilder();
+	public function __construct( Config $config  ) {
+		$this->config = $config;
+		$this->client = new KrakenClient( $this->config->apiEndpoint, $this->config->apiToken );
 	}
-	
 	
 	private function dispatch( ReportBuilder $report ): void {
 		$this->client->sendReport( $report->getData() );
 	}
 	
 	protected function write( string $message, string $level ): void {
-		$report = $this->logBuilder->create( $level, $message );
+		$report = $this->config->logBuilder->create( $level, $message );
 		
 		$this->dispatch( $report );
 	}
 	
-	public function exception( \Throwable $exception ): void {
-		$report = $this->exceptionBuilder->create( $exception );
+	public function exception( Throwable $exception ): void {
+		$report = $this->config->exceptionBuilder->create( $exception );
 		$this->dispatch( $report );
 	}
 	
 	public function fatalError( $errno, $errstr, $errfile, $errline, $backtrace ) {
-		$report = $this->fatalErrorBuilder->create( $errno, $errstr, $errfile, $errline, $backtrace );
+		$report = $this->config->fatalErrorBuilder->create( $errno, $errstr, $errfile, $errline, $backtrace );
 		$this->dispatch( $report );
 	}
 	
