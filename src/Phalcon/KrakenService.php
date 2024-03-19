@@ -5,7 +5,7 @@ namespace Shellrent\KrakenClient\Phalcon;
 use Phalcon\Di\Di;
 use Shellrent\KrakenClient\Phalcon\Config\Config;
 
-class KrakenServiceProvider {
+class KrakenService {
 	public const CONFIG_BIND = 'kraken-config';
 	
 	public const LOGGER_CLASS_BIND = KrakenLogger::class;
@@ -14,10 +14,10 @@ class KrakenServiceProvider {
 		private Config $config
 	) {	}
 	
-	public static function krakenConfig( ?Di $di = null ): ?Config {
+	public static function config( ?Di $di = null ): Config {
 		$di = $di ?? Di::getDefault();
 		if( !$di->has( self::CONFIG_BIND ) ) {
-			return null;
+			return Config::default();
 		}
 		
 		return $di->get( self::CONFIG_BIND );
@@ -32,7 +32,7 @@ class KrakenServiceProvider {
 			$loggerClass = $di->get( self::LOGGER_CLASS_BIND );
 		}
 		
-		$config = $config ?? static::krakenConfig() ?? Config::default();
+		$config = $config ?? static::config();
 
 		return new $loggerClass( $config );
 	}
