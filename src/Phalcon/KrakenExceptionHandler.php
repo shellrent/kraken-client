@@ -8,13 +8,21 @@ use Throwable;
 class KrakenExceptionHandler {
 	private function __construct(
 		protected Config $config,
+		protected array $enabledEnvs,
 		protected array $hideDataKey = [],
 		protected array $sessionKey = [],
 	) {}
 	
-	public static function create( ?Config $config = null ): self {
+	public static function create( ?array $enabledEnvs = null, ?Config $config = null ): self {
 		$config = $config ?? Config::default();
-		return new self( $config );
+		
+		if( $enabledEnvs === null ) {
+			$enabledEnvs = [
+				'production'
+			];
+		}
+		
+		return new self( $config, $enabledEnvs );
 	}
 	
 	protected function getLogger(): KrakenLogger {
@@ -56,6 +64,14 @@ class KrakenExceptionHandler {
 	}
 	
 	public function report( ?Throwable $throwable, $errno, $errstr, $errfile, $errline, $backtrace ): void {
+		$currentEnv = getenv( 'ENVIRONMENT' ) ?? null;
+		
+		if( $currentEnv !== null and !empty( $this->enabledEnvs ) ) {
+			if( !in_array( $currentEnv, $this->enabledEnvs ) ) {
+				return;
+			}
+		}
+		
 		try {
 			if( $throwable !== null ) {
 				$this->logException( $throwable );

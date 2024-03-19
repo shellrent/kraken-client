@@ -16,8 +16,8 @@ class Config {
 	public static function default(): self {
 		$config = new self();
 		
-		$config->apiEndpoint = env( 'KRAKEN_API_ENDPOINT', 'localhost' );
-		$config->apiToken =  env( 'KRAKEN_API_TOKEN', 'token' );
+		$config->apiEndpoint = getenv( 'KRAKEN_API_ENDPOINT' ) ?? 'localhost';
+		$config->apiToken =  getenv( 'KRAKEN_API_TOKEN' ) ?? 'token';
 		$config->exceptionBuilder = new ExceptionBuilder();
 		$config->fatalErrorBuilder = new FatalErrorBuilder();
 		$config->logBuilder = new LogBuilder();
