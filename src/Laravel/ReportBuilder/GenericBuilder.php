@@ -18,15 +18,8 @@ abstract class GenericBuilder {
 		
 		$report->addExtraInfo( 'header', Request::header() );
 		
-		$query = Request::query();
-		if( !empty( $query ) ) {
-			$report->addExtraInfo( 'get', $query );
-		}
-		
-		$post = Request::post();
-		if( !empty( $post ) ) {
-			$report->addExtraInfo( 'post', $post );
-		}
+		$report->addExtraInfo( 'get', Request::query() );
+		$report->addExtraInfo( 'post', Request::post() );
 	}
 	
 	protected function addCliData( ReportBuilder $report ): void {

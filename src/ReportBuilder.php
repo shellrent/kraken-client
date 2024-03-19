@@ -60,6 +60,10 @@ class ReportBuilder {
 	}
 	
 	public function addExtraInfo( string $key, $extraInfo ): ReportBuilder {
+		if( is_array( $extraInfo ) and empty( $extraInfo ) ) {
+			return $this;
+		}
+		
 		$this->extraInfo[$key] = $extraInfo;
 		return $this;
 	}
