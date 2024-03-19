@@ -14,7 +14,7 @@ class KrakenExceptionHandler {
 	) {}
 	
 	public static function create( ?array $enabledEnvs = null, ?Config $config = null ): self {
-		$config = $config ?? Config::default();
+		$config = $config ?? KrakenServiceProvider::krakenConfig() ?? Config::default();
 		
 		if( $enabledEnvs === null ) {
 			$enabledEnvs = [
@@ -32,7 +32,7 @@ class KrakenExceptionHandler {
 		$this->config->fatalErrorBuilder->setHideDataKeys( $this->hideDataKey );
 		$this->config->fatalErrorBuilder->setSessionKeys( $this->sessionKey );
 		
-		return new KrakenLogger( $this->config );
+		return KrakenServiceProvider::logger( $this->config );
 	}
 	
 	protected function logException( Throwable $throwable ): void {
