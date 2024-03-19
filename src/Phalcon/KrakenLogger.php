@@ -23,18 +23,18 @@ class KrakenLogger implements LoggerInterface {
 	}
 	
 	protected function write( string $message, string $level ): void {
-		$report = $this->config->logBuilder->create( $level, $message );
+		$report = $this->config->logBuilder->create( $level, $message, $this->config->logReportType );
 		
 		$this->dispatch( $report );
 	}
 	
 	public function exception( Throwable $exception ): void {
-		$report = $this->config->exceptionBuilder->create( $exception );
+		$report = $this->config->exceptionBuilder->create( $exception, $this->config->exceptionReportType );
 		$this->dispatch( $report );
 	}
 	
 	public function fatalError( $errno, $errstr, $errfile, $errline, $backtrace ) {
-		$report = $this->config->fatalErrorBuilder->create( $errno, $errstr, $errfile, $errline, $backtrace );
+		$report = $this->config->fatalErrorBuilder->create( $errno, $errstr, $errfile, $errline, $backtrace, $this->config->exceptionReportType );
 		$this->dispatch( $report );
 	}
 	

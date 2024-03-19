@@ -12,6 +12,8 @@ class Config {
 	public ExceptionBuilder $exceptionBuilder;
 	public FatalErrorBuilder $fatalErrorBuilder;
 	public LogBuilder $logBuilder;
+	public string $exceptionReportType;
+	public string $logReportType;
 	
 	public static function default(): self {
 		$config = new self();
@@ -21,6 +23,9 @@ class Config {
 		$config->exceptionBuilder = new ExceptionBuilder();
 		$config->fatalErrorBuilder = new FatalErrorBuilder();
 		$config->logBuilder = new LogBuilder();
+		$config->exceptionReportType = 'EXCEPTION';
+		$config->logReportType = 'LOG';
+		
 		
 		return $config;
 	}
