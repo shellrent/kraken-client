@@ -2,6 +2,7 @@
 
 namespace Shellrent\KrakenClient\Phalcon\ReportBuilder;
 
+use Phalcon\Cli\Dispatcher as CliDispatcher;
 use Shellrent\KrakenClient\ReportBuilder;
 
 class ExceptionBuilder extends GenericBuilder {
@@ -58,7 +59,7 @@ class ExceptionBuilder extends GenericBuilder {
 			if ( isset( $cookiePart[1] ) ) {
 				$cookies[$cookiePart[0]] = $cookiePart[1];
 				
-			} else {
+			} elseif( isset( $cookiePart[0] ) ) {
 				$cookies[] = $cookiePart[0];
 			}
 		}
@@ -82,10 +83,16 @@ class ExceptionBuilder extends GenericBuilder {
 		$report->setModule( $this->dispatcher->getModuleName() );
 
 		
-		$report->addExtraInfo( 'domain', $this->request->getHttpHost() );
-		$report->addExtraInfo( 'requestUri', $this->request->getURI() );
 		
-		$report->addExtraInfo( 'header', $this->sanitize( $this->request->getHeaders() ) );
+		if ( $this->dispatcher instanceof CliDispatcher ) {
+			$report->addExtraInfo( 'command', $dispatcher->getTaskName() );
+			
+		} else {
+			$report->addExtraInfo( 'domain', $this->request->getHttpHost() );
+			$report->addExtraInfo( 'requestUri', $this->request->getURI() );
+			$report->addExtraInfo( 'header', $this->sanitize( $this->request->getHeaders() ) );
+		}
+		
 		
 		$query = $this->request->getQuery();
 		unset( $query['_url'] );
