@@ -2,28 +2,38 @@
 
 namespace Shellrent\KrakenClient\Phalcon;
 
+use Throwable;
+
 class KrakenExceptionHandler {
 	
-	private function __construct(  ) {
+	private function __construct(
+		private readonly KrakenLogger $logger
+	) {}
 	
+	public static function create(): self {
+		$logger = new KrakenLogger();
+		return new self( $logger );
 	}
 	
-	public static function create(  ): self {
-		return new self();
+	protected function exception( Throwable $throwable ): void {
+		$this->logger->exception( $throwable );
 	}
 	
-	public function report( ?\Throwable $throwable ): void {
+	protected function error( $errno, $errstr, $errfile, $errline, $backtrace ): void {
+		$this->logger->fatalError( $errno, $errstr, $errfile, $errline, $backtrace );
+	}
+	
+	public function report( ?Throwable $throwable, $errno, $errstr, $errfile, $errline, $backtrace ): void {
 		try {
-			if(!$throwable) {
-				//TODO
+			if( $throwable !== null ) {
+				$this->exception( $throwable );
+				
+			} else {
+				$this->error($errno, $errstr, $errfile, $errline, $backtrace);
 			}
 			
-			$logger = new KrakenLogger();
-			
-			$logger->exception( $throwable );
-			
-		} catch( \Throwable $fatalEx ) {
-			echo $fatalEx->getMessage(); exit();
+		} catch( Throwable $fatalEx ) {
+			syslog( LOG_CRIT, $fatalEx->getMessage() );
 		}
 	}
 }

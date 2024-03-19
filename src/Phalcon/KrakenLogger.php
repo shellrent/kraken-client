@@ -6,15 +6,17 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Shellrent\KrakenClient\KrakenClient;
 use Shellrent\KrakenClient\Phalcon\ReportBuilder\ExceptionBuilder;
+use Shellrent\KrakenClient\Phalcon\ReportBuilder\FatalErrorBuilder;
 use Shellrent\KrakenClient\Phalcon\ReportBuilder\LogBuilder;
 use Shellrent\KrakenClient\ReportBuilder;
 
 class KrakenLogger implements LoggerInterface {
 	private KrakenClient $client;
 	private ExceptionBuilder $exceptionBuilder;
+	private FatalErrorBuilder $fatalErrorBuilder;
 	private LogBuilder $logBuilder;
 	
-	public function __construct( ?KrakenClient $client = null, ?ExceptionBuilder $exceptionBuilder = null, ?LogBuilder $logBuilder = null ) {
+	public function __construct( ?KrakenClient $client = null, ?ExceptionBuilder $exceptionBuilder = null, ?FatalErrorBuilder $fatalErrorBuilder = null, ?LogBuilder $logBuilder = null  ) {
 		if( !$client ) {
 			$client = new KrakenClient(
 				env( 'KRAKEN_API_ENDPOINT', 'localhost' ),
@@ -24,12 +26,12 @@ class KrakenLogger implements LoggerInterface {
 
 		$this->client = $client;
 		$this->exceptionBuilder = $exceptionBuilder ?? new ExceptionBuilder();
+		$this->fatalErrorBuilder = $fatalErrorBuilder ?? new FatalErrorBuilder();
 		$this->logBuilder = $logBuilder ?? new LogBuilder();
 	}
 	
 	
 	private function dispatch( ReportBuilder $report ): void {
-		dump($report->getData());exit();
 		$this->client->sendReport( $report->getData() );
 	}
 	
@@ -41,6 +43,11 @@ class KrakenLogger implements LoggerInterface {
 	
 	public function exception( \Throwable $exception ): void {
 		$report = $this->exceptionBuilder->create( $exception );
+		$this->dispatch( $report );
+	}
+	
+	public function fatalError( $errno, $errstr, $errfile, $errline, $backtrace ) {
+		$report = $this->fatalErrorBuilder->create( $errno, $errstr, $errfile, $errline, $backtrace );
 		$this->dispatch( $report );
 	}
 	
