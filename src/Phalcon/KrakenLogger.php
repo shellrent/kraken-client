@@ -15,7 +15,11 @@ class KrakenLogger implements LoggerInterface {
 	
 	public function __construct( Config $config  ) {
 		$this->config = $config;
-		$this->client = new KrakenClient( $this->config->apiEndpoint, $this->config->apiToken );
+		$this->client = new KrakenClient(
+			$this->config->apiEndpoint,
+			$this->config->apiToken,
+			$this->config->verifySsl
+		);
 	}
 	
 	private function dispatch( ReportBuilder $report ): void {

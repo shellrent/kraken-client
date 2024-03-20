@@ -13,7 +13,11 @@ class KrakenServiceProvider extends ServiceProvider {
 		$this->mergeConfigFrom( __DIR__ . '/config/config.php', 'kraken' );
 		
 		$this->app->singleton(KrakenClient::class, function () {
-			return new KrakenClient( config('kraken.endpoint'), config('kraken.auth_token' ) );
+			return new KrakenClient(
+				config( 'kraken.endpoint' ),
+				config( 'kraken.auth_token' ),
+				config( 'kraken.verify_ssl' ),
+			);
 		});
 		
 		$this->app->bind( KrakenLogger::class, KrakenLogger::class );

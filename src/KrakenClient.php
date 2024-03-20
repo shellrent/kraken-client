@@ -12,11 +12,12 @@ class KrakenClient {
 	private string $endpoint;
 	private string $authToken;
 	
-	public function __construct( string $endpoint, string $authToken ) {
+	public function __construct( string $endpoint, string $authToken, bool $verify = true ) {
 		$this->endpoint = $endpoint;
 		$this->authToken = $authToken;
 		$this->client = new Client([
 			'base_uri' => $this->endpoint,
+			'verify' => $verify,
 		]);
 	}
 	

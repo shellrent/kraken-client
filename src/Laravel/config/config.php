@@ -16,6 +16,8 @@ return [
 	
 	'auth_token' => env( 'KRAKEN_AUTH_TOKEN', 'token' ),
 	
+	'verify_ssl' => true,
+	
 	/*
     |--------------------------------------------------------------------------
     | Queue for report job

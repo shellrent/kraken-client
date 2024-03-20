@@ -24,6 +24,7 @@ class SendReport implements ShouldQueue {
 			
 		} catch( Throwable $exception ) {
 			Log::channel( 'syslog' )->critical( $exception->getMessage() );
+			Log::channel( 'single' )->critical( $exception->getMessage() );
 			$this->fail( $exception );
 		}
 	}

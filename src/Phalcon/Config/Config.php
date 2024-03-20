@@ -9,6 +9,7 @@ use Shellrent\KrakenClient\Phalcon\ReportBuilder\LogBuilder;
 class Config {
 	public string $apiEndpoint;
 	public string $apiToken;
+	public bool $verifySsl;
 	public ExceptionBuilder $exceptionBuilder;
 	public FatalErrorBuilder $fatalErrorBuilder;
 	public LogBuilder $logBuilder;
@@ -20,6 +21,7 @@ class Config {
 		
 		$config->apiEndpoint = getenv( 'KRAKEN_API_ENDPOINT' ) ?? 'localhost';
 		$config->apiToken =  getenv( 'KRAKEN_API_TOKEN' ) ?? 'token';
+		$config->verifySsl = true;
 		$config->exceptionBuilder = new ExceptionBuilder();
 		$config->fatalErrorBuilder = new FatalErrorBuilder();
 		$config->logBuilder = new LogBuilder();
