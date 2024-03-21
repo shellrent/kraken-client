@@ -2,15 +2,15 @@
 
 return [
 	/*
-    |--------------------------------------------------------------------------
-    | Kraken api connection params
-    |--------------------------------------------------------------------------
+	|--------------------------------------------------------------------------
+	| Kraken api connection params
+	|--------------------------------------------------------------------------
 	|
 	| These values represent the endpoint and bearer token for kraken app
 	| On the kraken application you just need to configure an environment
 	| from the project page, to get the auth token
 	|
-    */
+	*/
 	
 	'endpoint' => env( 'KRAKEN_ENDPOINT', 'localhost' ),
 	
@@ -19,21 +19,21 @@ return [
 	'verify_ssl' => env( 'KRAKEN_VERIFY_SSL', true ),
 	
 	/*
-    |--------------------------------------------------------------------------
-    | Queue for report job
+	|--------------------------------------------------------------------------
+	| Queue for report job
 	|--------------------------------------------------------------------------
 	|
 	| This value indicates the name of the queue to which jobs will be added
 	| If set to null the queue is disabled and reports will be sent immediately
 	| By setting "default" jobs will be added to the system's default queue
 	|
-    */
+	*/
 	
 	'queue_name' =>env( 'KRAKEN_QUEUE_NAME', null ),
 	
 	/*
-    |--------------------------------------------------------------------------
-    | Application module
+	|--------------------------------------------------------------------------
+	| Application module
 	|--------------------------------------------------------------------------
 	|
 	| By default the Laravel application is divided into two modules
@@ -48,8 +48,8 @@ return [
 	'cli_module_code' => 'CLI',
 	
 	/*
-    |--------------------------------------------------------------------------
-    | Environments for the exception handler
+	|--------------------------------------------------------------------------
+	| Environments for the exception handler
 	|--------------------------------------------------------------------------
 	|
 	| The collection of values indicates on which environments the kraken
@@ -61,8 +61,8 @@ return [
 	'enabled_envs' => ['production'],
 	
 	/*
-    |--------------------------------------------------------------------------
-    | Exception report configuration
+	|--------------------------------------------------------------------------
+	| Exception report configuration
 	|--------------------------------------------------------------------------
 	|
 	| These values represent the configuration for generating a exception report
@@ -77,8 +77,8 @@ return [
 	'exception_report_builder' => \Shellrent\KrakenClient\Laravel\ReportBuilder\ExceptionBuilder::class,
 	
 	/*
-    |--------------------------------------------------------------------------
-    | Log report configuration
+	|--------------------------------------------------------------------------
+	| Log report configuration
 	|--------------------------------------------------------------------------
 	|
 	| These values represent the configuration for generating a log report
