@@ -106,11 +106,9 @@ abstract class GenericBuilder {
 				continue;
 			}
 			
-			if( !in_array( $dataKey, $this->hideDataKeys ) ) {
-				continue;
+			if( in_array( $dataKey, $this->hideDataKeys ) or in_array( $info, $this->hideDataKeys )) {
+				$data[$dataKey] = '(hidden)';
 			}
-			
-			$data[$dataKey] = '(hidden)';
 		}
 		
 		return $data;

@@ -1,11 +1,14 @@
-<p align="center">
+<div style="text-align: center;">
     <img src="logo.png" width="200" alt="Kraken Client Logo">
-    <p align="center">
-        <a href="https://packagist.org/packages/shellrent/kraken-client"><img alt="Download total" src="https://img.shields.io/packagist/dt/shellrent/kraken-client"></a>
-        <a href="https://packagist.org/packages/shellrent/kraken-client"><img alt="Last version" src="https://img.shields.io/packagist/v/shellrent/kraken-client"></a>
-        <img alt="Php version" src="https://img.shields.io/packagist/dependency-v/shellrent/kraken-client/php">
+    <p>
+        <a href="https://packagist.org/packages/shellrent/kraken-client">
+          <img alt="Last version" src="https://img.shields.io/packagist/v/shellrent/kraken-client">
+        </a>
+        <a href="https://php.net/releases">
+          <img alt="Php version" src="https://img.shields.io/packagist/dependency-v/shellrent/kraken-client/php">
+        </a>
     </p>
-</p>
+</div>
 
 ------
 **kRAKEN** is an application for tracking and managing errors issued by external applications
@@ -155,9 +158,9 @@ It can also be added to the stack channel along with other channels
 
 The kraken log channel can be used as a replacement for the ExceptionHandler, simply set `'report_exceptions' => true` in the configuration
 
-> [!WARNING]
+> **_WARNING_**
 > 
-> Use the ExceptionHandler and the log channel with `'report_exceptions' => true` set, duplicates the reports sent in case of an exception 
+> Use the ExceptionHandler and the log channel with set `'report_exceptions' => true` at the same times, **duplicates** the reports sent in case of an exception 
 
 ### Customization (Laravel)
 
@@ -174,7 +177,7 @@ From the file created in `config/kraken.php` you can edit:
 - The type code and builder class of an exception report
 - The type code and builder class of an log report
 
-For more details see [laravel config file](/src/Laravel/config/config.php)
+For more details see the [configuration file](/src/Laravel/config/config.php)
 
 ## Phalcon
 
@@ -184,7 +187,83 @@ For more details see [laravel config file](/src/Laravel/config/config.php)
 > 
 > use on other versions is possible at your own risk
 
+There is an integration with the Phalcon framework
+
+The integration with Phalcon provides an `ExceptionHandler` and allows you to obtain the `configuration` and a `psr logger` via the DI container of the framework
+
 ### Integration (Phalcon)
+
+To make the package work, you need to add the following settings to the `.env` file:
+
+```dotenv
+KRAKEN_API_ENDPOINT="https://kraken-endpoint.com"
+KRAKEN_API_TOKEN="auth-token"
+```
+
 ### ExceptionHandler Usage (Phalcon)
+
+To send exception reports it is necessary to integrate the **ExceptionHandler** provided in the phalcon package with the one used by the application
+
+It is possible to decide on which environments to activate the sending of reports, passing the collections of environments to the ExceptionHandler. By default the activated environment is `production`
+
+```php
+$envs = ['production'];
+$krakenHandler = \Shellrent\KrakenClient\Phalcon\KrakenExceptionHandler::create( $envs )
+$krakenHandler->report( $exception, $errno, $errstr, $errfile, $errline, $backtrace );
+```
+
+The handler handles both exceptions and php errors
+
+You can add session parts to the report via the `addSessionKey` method
+
+```php
+$krakenHandler->addSessionKey( 'logged-used' );
+```
+
+Furthermore, it is possible to hide specific information in the report by passing the key or the value that identifies it. Useful if sensitive data is present in `$_SERVER` or other collections
+
+```php
+$krakenHandler->addHideDataKey( getenv( 'DATABASE_PASSWORD' ) );
+$krakenHandler->addHideDataKey( 'KEY_CLI_ACCESS' );
+```
+
 ### Logger Usage (Phalcon)
+
+It is possible to send single reports and logs via KrakenLogger using `KrakenService`:
+
+```php
+$logger = \Shellrent\KrakenClient\Phalcon\KrakenService::logger();
+
+$logger->debug( 'message' );
+$logger->info( 'message' );
+$logger->notice( 'message' );
+$logger->warning( 'message' );
+$logger->error( 'message' );
+$logger->critical( 'message' );
+$logger->alert( 'message' );
+$logger->emergency( 'message' );
+```
+
 ### Customization (Phalcon)
+
+It is not necessary for correct working, but in order to customize the behavior of the package, the services need to be registered in the DI
+
+```php
+abstract class GenericApplication {
+  /******/
+  
+  private function registerServices() {
+      /******/
+      $config = \Shellrent\KrakenClient\Phalcon\Config\Config::default();
+      \Shellrent\KrakenClient\Phalcon\KrakenService::create( $config )->inject( $this->Di );
+  } 
+}
+```
+
+The config object can be customized for change:
+
+- The type code and builder class of an exception report
+- The builder class of an php error report
+- The type code and builder class of an log report
+
+For more details see the [configuration class](/src/Phalcon/Config/Config.php)

@@ -3,7 +3,7 @@
 return [
 	/*
     |--------------------------------------------------------------------------
-    | Kraken api credential
+    | Kraken api connection params
     |--------------------------------------------------------------------------
 	|
 	| These values represent the endpoint and bearer token for kraken app

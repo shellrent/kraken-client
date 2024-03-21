@@ -32,7 +32,7 @@ class KrakenService {
 			$loggerClass = $di->get( self::LOGGER_CLASS_BIND );
 		}
 		
-		$config = $config ?? static::config();
+		$config = $config ?? static::config( $di );
 
 		return new $loggerClass( $config );
 	}
@@ -46,7 +46,7 @@ class KrakenService {
 		$service = $this;
 		
 		$di->setShared( self::CONFIG_BIND, function () use ( $service ) {
-			return $service->config;
+			return clone $service->config;
 		} );
 		
 		$di->setShared( self::LOGGER_CLASS_BIND, function() {
