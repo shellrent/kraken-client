@@ -29,7 +29,7 @@ The integrations add an **ExceptionHandler**, which carries out a complete repor
 ## Get Started
 > **Requires [PHP 8.1+](https://php.net/releases/)**
 
-First, install OpenAI via the [Composer](https://getcomposer.org/) package manager:
+First, install Kraken Client via the [Composer](https://getcomposer.org/) package manager:
 
 ```bash
 composer require shellrent/kraken-client
