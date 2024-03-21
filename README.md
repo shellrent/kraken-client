@@ -74,7 +74,7 @@ try {
 
 There is an integration with the Laravel framework
 
-The Laravel package provides an `ExceptionHandler` and registers the `client API` and a psr logger in the service container
+The Laravel package provides an `ExceptionHandler` and registers the `client API` and a psr style logger in the service container
 
 ### Integration (Laravel)
 
@@ -185,7 +185,7 @@ For more details see the [configuration file](/src/Laravel/config/config.php)
 
 There is an integration with the Phalcon framework
 
-The integration with Phalcon provides an `ExceptionHandler` and allows you to obtain the `configuration` and a `psr logger` via the DI container of the framework
+The integration with Phalcon provides an `ExceptionHandler` and allows you to obtain the `configuration` and a `psr style logger` via the DI container of the framework
 
 ### Integration (Phalcon)
 

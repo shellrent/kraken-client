@@ -65,7 +65,7 @@ return [
 	| Exception report configuration
 	|--------------------------------------------------------------------------
 	|
-	| These values represent the configuration for generating a exception report
+	| These values represent the configuration for generating an exception report
 	| The type corresponds to the code configured on the kraken application on
 	| the project page. Its correct configuration is mandatory
 	| The builder is the class that builds the report

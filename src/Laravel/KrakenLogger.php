@@ -2,13 +2,12 @@
 
 namespace Shellrent\KrakenClient\Laravel;
 
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
+use Shellrent\KrakenClient\GenericKrakenLogger;
 use Shellrent\KrakenClient\Laravel\Jobs\SendReport;
 use Shellrent\KrakenClient\ReportBuilder;
-use Stringable;
+use Throwable;
 
-class KrakenLogger implements LoggerInterface {
+class KrakenLogger extends GenericKrakenLogger {
 	private ?string $queue;
 	
 	/**
@@ -31,7 +30,7 @@ class KrakenLogger implements LoggerInterface {
 		}
 	}
 	
-	protected function write( string $message, string $level ): void {
+	public function log( string $level, string $message ): void {
 		$builder = config('kraken.log_report_builder' );
 		$report = (new $builder)( $message, $level );
 		
@@ -43,46 +42,10 @@ class KrakenLogger implements LoggerInterface {
 		return $this;
 	}
 	
-	public function exception( \Throwable $exception ): void {
+	public function exception( Throwable $exception ): void {
 		$builder = config('kraken.exception_report_builder' );
 		$report = (new $builder)( $exception );
 		
 		$this->dispatch( $report );
-	}
-	
-	public function log( $level, Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, $level );
-	}
-	
-	public function emergency( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::EMERGENCY );
-	}
-	
-	public function alert( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::ALERT );
-	}
-	
-	public function critical( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::CRITICAL );
-	}
-	
-	public function error( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::ERROR );
-	}
-	
-	public function warning( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::WARNING );
-	}
-	
-	public function notice( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::NOTICE );
-	}
-	
-	public function info( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::INFO );
-	}
-	
-	public function debug( Stringable|string $message, array $context = [] ): void {
-		$this->write( $message, LogLevel::DEBUG );
 	}
 }

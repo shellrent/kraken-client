@@ -4,6 +4,7 @@ namespace Shellrent\KrakenClient\Laravel\Console;
 
 use Illuminate\Console\Command;
 use Shellrent\KrakenClient\Laravel\Facades\KrakenClient;
+use Throwable;
 
 class TestConnection extends Command {
 	protected $signature = 'kraken:test';
@@ -16,7 +17,7 @@ class TestConnection extends Command {
 		try {
 			$result = json_decode( KrakenClient::testConnection()->getBody() );
 			
-		} catch( \Throwable $exception ) {
+		} catch( Throwable $exception ) {
 			$this->error( 'Failed to connect' );
 			$this->line( $exception->getMessage() );
 			return;
