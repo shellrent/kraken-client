@@ -20,7 +20,7 @@ class KrakenService {
 			return Config::default();
 		}
 		
-		return $di->get( self::CONFIG_BIND );
+		return clone $di->get( self::CONFIG_BIND );
 	}
 	
 	public static function logger( ?Config $config = null, ?Di $di = null): KrakenLogger {
@@ -46,7 +46,7 @@ class KrakenService {
 		$service = $this;
 		
 		$di->setShared( self::CONFIG_BIND, function () use ( $service ) {
-			return clone $service->config;
+			return $service->config;
 		} );
 		
 		$di->setShared( self::LOGGER_CLASS_BIND, function() {
