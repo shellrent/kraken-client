@@ -8,7 +8,7 @@ use Shellrent\KrakenClient\Laravel\Facades\KrakenClient;
 class TestConnection extends Command {
 	protected $signature = 'kraken:test';
 	
-	protected $description = 'Test the connection with the kraken application';
+	protected $description = 'Test the connection and the configuration with the kraken application';
 	
 	public function handle() {
 		$this->newLine();

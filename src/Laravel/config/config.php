@@ -16,7 +16,7 @@ return [
 	
 	'auth_token' => env( 'KRAKEN_AUTH_TOKEN', 'token' ),
 	
-	'verify_ssl' => true,
+	'verify_ssl' => env( 'KRAKEN_VERIFY_SSL', true ),
 	
 	/*
     |--------------------------------------------------------------------------
@@ -91,5 +91,4 @@ return [
 	'log_report_type'=> 'LOG',
 	
 	'log_report_builder' => \Shellrent\KrakenClient\Laravel\ReportBuilder\LogBuilder::class,
-	
 ];
