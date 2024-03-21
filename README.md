@@ -1,12 +1,8 @@
-<div style="text-align: center;">
+<div align="center">
     <img src="logo.png" width="200" alt="Kraken Client Logo">
     <p>
-        <a href="https://packagist.org/packages/shellrent/kraken-client">
-          <img alt="Last version" src="https://img.shields.io/packagist/v/shellrent/kraken-client">
-        </a>
-        <a href="https://php.net/releases">
-          <img alt="Php version" src="https://img.shields.io/packagist/dependency-v/shellrent/kraken-client/php">
-        </a>
+        <a href="https://packagist.org/packages/shellrent/kraken-client"><img alt="Last version" src="https://img.shields.io/packagist/v/shellrent/kraken-client"></a>
+        <a href="https://php.net/releases"><img alt="Php version" src="https://img.shields.io/packagist/dependency-v/shellrent/kraken-client/php"></a>
     </p>
 </div>
 
