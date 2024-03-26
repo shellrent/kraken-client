@@ -68,6 +68,8 @@ try {
 
 > **Requires [Laravel 10.x](https://laravel.com/docs/10.x)**
 >
+> **[ExceptionHandler](#exceptionhandler-usage-laravel) also works with [Laravel 9.x](https://laravel.com/docs/9.x)**
+> 
 > Previous or later versions have not yet been tested
 > 
 > use on other versions is possible at your own risk
