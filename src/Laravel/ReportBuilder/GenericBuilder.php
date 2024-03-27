@@ -46,6 +46,21 @@ abstract class GenericBuilder {
 		]);
 	}
 	
+	protected function addUserInfo( ReportBuilder $report ): void {
+		$userBuilder = config('kraken.user_report_builder' );
+		
+		if( class_exists( $userBuilder ) ) {
+			$userBuilder = new $userBuilder();
+		}
+		
+		if(  !$userBuilder or !is_callable( $userBuilder ) ) {
+			return;
+		}
+		
+		$data = call_user_func( $userBuilder );
+		$report->addExtraInfo( 'user', $data );
+	}
+	
 	protected function getModule(): ?string {
 		return App::runningInConsole() ? config('kraken.cli_module_code' ) : config('kraken.app_module_code' );
 	}

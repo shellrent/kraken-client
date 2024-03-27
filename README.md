@@ -112,6 +112,8 @@ $app->singleton(
 
 It is possible to decide on which environments to activate the sending of reports by modifying `enabled_envs` in the config file; by default only the **production** environment is enabled
 
+By default the package does not send the information of the logged in user, they can be added by setting `user_report_builder` in the configuration file, with a callable that returns this information
+
 For more details see [laravel customization](#customization-laravel)
 
 ### Logger Usage (Laravel)

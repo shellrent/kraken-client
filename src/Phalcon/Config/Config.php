@@ -31,4 +31,8 @@ class Config {
 		
 		return $config;
 	}
+	
+	public function __clone() {
+		//TODO
+	}
 }

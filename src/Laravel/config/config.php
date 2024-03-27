@@ -91,4 +91,17 @@ return [
 	'log_report_type'=> 'LOG',
 	
 	'log_report_builder' => \Shellrent\KrakenClient\Laravel\ReportBuilder\LogBuilder::class,
+	
+	/*
+	|--------------------------------------------------------------------------
+	| Log report configuration
+	|--------------------------------------------------------------------------
+	|
+	| This value represents the system for obtaining the information
+	| of the logged in user at the time of generating the report
+	| Must be a callable element. If null no information is added
+	|
+	*/
+	
+	'user_report_builder' => null,
 ];

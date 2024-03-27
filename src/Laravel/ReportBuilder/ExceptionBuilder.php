@@ -18,6 +18,8 @@ class ExceptionBuilder extends GenericBuilder {
 		
 		$report->setModule( $this->getModule() );
 		
+		$this->addUserInfo( $report );
+		
 		return $report;
 	}
 	

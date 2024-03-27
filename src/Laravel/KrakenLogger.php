@@ -32,7 +32,16 @@ class KrakenLogger extends GenericKrakenLogger {
 	
 	public function log( string $level, string $message ): void {
 		$builder = config('kraken.log_report_builder' );
-		$report = (new $builder)( $message, $level );
+		
+		if( class_exists( $builder ) ) {
+			$builder = new $builder();
+		}
+		
+		if(  !is_callable( $builder ) ) {
+			throw new \Exception( 'kraken.log_report_builder must me a callable entity' );
+		}
+		
+		$report = call_user_func( $builder, $message, $level  );
 		
 		$this->dispatch( $report );
 	}
@@ -44,7 +53,16 @@ class KrakenLogger extends GenericKrakenLogger {
 	
 	public function exception( Throwable $exception ): void {
 		$builder = config('kraken.exception_report_builder' );
-		$report = (new $builder)( $exception );
+		
+		if( class_exists( $builder ) ) {
+			$builder = new $builder();
+		}
+		
+		if(  !is_callable( $builder ) ) {
+			throw new \Exception( 'kraken.log_report_builder must me a callable entity' );
+		}
+		
+		$report = call_user_func( $builder, $exception );
 		
 		$this->dispatch( $report );
 	}
