@@ -22,6 +22,11 @@ class KrakenLogger extends GenericKrakenLogger {
 	}
 	
 	protected function dispatch( ReportBuilder $report ): void {
+		if( $this->config->userDataGetter ) {
+			$userData = call_user_func( $this->config->userDataGetter );
+			$report->addExtraInfo( 'user', $userData );
+		}
+		
 		$this->client->sendReport( $report->getData() );
 	}
 	
