@@ -11,6 +11,8 @@ class LogBuilder extends GenericBuilder {
 		$report->setModule( $this->getModule() );
 		$report->addExtraInfo( 'level', $level );
 		
+		$this->addUserInfo( $report );
+		
 		return $report;
 	}
 	

@@ -112,6 +112,8 @@ $app->singleton(
 
 It is possible to decide on which environments to activate the sending of reports by modifying `enabled_envs` in the config file; by default only the **production** environment is enabled
 
+By default the package does not send the information of the logged in user, they can be added by setting `user_report_builder` in the configuration file, with a callable that returns this information
+
 For more details see [laravel customization](#customization-laravel)
 
 ### Logger Usage (Laravel)
@@ -174,6 +176,7 @@ From the file created in `config/kraken.php` you can edit:
 - The environments that trigger the ExceptionHandler
 - The type code and builder class of an exception report
 - The type code and builder class of an log report
+- Signed in user information
 
 For more details see the [configuration file](/src/Laravel/config/config.php)
 
@@ -225,6 +228,11 @@ $krakenHandler->addHideDataKey( getenv( 'DATABASE_PASSWORD' ) );
 $krakenHandler->addHideDataKey( 'KEY_CLI_ACCESS' );
 ```
 
+By default the package does not send the information of the logged in user, they can be added by setting `userDataGetter` property in the configuration object, with a callable that returns this information
+
+For more details see [phalcon customization](#customization-phalcon)
+
+
 ### Logger Usage (Phalcon)
 
 It is possible to send single reports and logs via KrakenLogger using `KrakenService`:
@@ -263,5 +271,6 @@ The config object can be customized for change:
 - The type code and builder class of an exception report
 - The builder class of an php error report
 - The type code and builder class of an log report
+- Signed in user information
 
 For more details see the [configuration class](/src/Phalcon/Config/Config.php)
